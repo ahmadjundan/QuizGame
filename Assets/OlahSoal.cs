@@ -33,7 +33,9 @@ public class OlahSoal : MonoBehaviour
     public float durasiPenilaian;
 
     int nilaiAkhir, jwbSalah, jwbnBenar;
-    float nilai;
+
+
+    float nilai = 0;
 
     // Start is called before the first frame update
 
@@ -119,6 +121,9 @@ public class OlahSoal : MonoBehaviour
     }
 
     private float HitungNilai() {
+        if (nilaiAkhir < 0) {
+            nilaiAkhir = 0;
+        }
         return nilai = (float)nilaiAkhir / maxSoal * 100;
 
     }
@@ -134,7 +139,7 @@ public class OlahSoal : MonoBehaviour
             // kurangi nilai
             nilaiAkhir -= 1;
             penilaian = "Jawaban Salah";
-            jwbSalah++;
+            jwbSalah+=1;
         }
 
         textPenilaian.text = penilaian;
