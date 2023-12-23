@@ -19,15 +19,12 @@ public class OlahSoal : MonoBehaviour
     bool ambilSoal;
     char kunciJawaban;
 
-    public GameObject[] heartColors;
 
-    public Sprite spriteHeartLoss;
 
-    public int heartCount;
     bool [] soalSelesai;
     public GameObject panel, Text;
     public GameObject ImagePenilaian, ImageHasil;
-    public Text txtHasil, txtNilai;
+    public Text txtHasil, txtNilai, txtSoal;
 
     public Text textSoal, textJawabanA, textJawabanB, textJawabanC, textJawabanD;
 
@@ -35,7 +32,7 @@ public class OlahSoal : MonoBehaviour
     private float durasi;
     public float durasiPenilaian;
 
-    int jwbBenar, jwbSalah;
+    int nilaiAkhir, jwbSalah, jwbnBenar;
     float nilai;
 
     // Start is called before the first frame update
@@ -45,9 +42,6 @@ public class OlahSoal : MonoBehaviour
     }
     void Start()
     {
-        for (int i = 0; i < 4; i++)
-
-        heartCount = heartColors.Length;
 
         durasi = durasiPenilaian;
 
@@ -98,6 +92,8 @@ public class OlahSoal : MonoBehaviour
                             textJawabanD.text = kumpulanSoal[randomIndexSoal, 4];
                             kunciJawaban = kumpulanSoal[randomIndexSoal, 5][0];
 
+                            txtSoal.text = "Soal " + (indexSoal + 1) + " / " + maxSoal;
+
                             soalSelesai[randomIndexSoal] = true;
 
                             ambilSoal = false;
@@ -123,7 +119,7 @@ public class OlahSoal : MonoBehaviour
     }
 
     private float HitungNilai() {
-        return nilai = (float)jwbBenar / maxSoal * 100;
+        return nilai = (float)nilaiAkhir / maxSoal * 100;
 
     }
 
@@ -132,9 +128,11 @@ public class OlahSoal : MonoBehaviour
         string penilaian;
         if (huruf.Equals(kunciJawaban)){
             penilaian = "Jawaban Benar";
-            jwbBenar++;
+            nilaiAkhir +=1;
+            jwbnBenar+=1;
         } else {
-            decreaseHeart();
+            // kurangi nilai
+            nilaiAkhir -= 1;
             penilaian = "Jawaban Salah";
             jwbSalah++;
         }
@@ -153,7 +151,7 @@ public class OlahSoal : MonoBehaviour
                 ImageHasil.SetActive(false);
 
                 if (durasiPenilaian <= 0)  {
-                    txtHasil.text ="Nilai Akhir Kamu: " + HitungNilai();
+                    txtHasil.text ="Jawaban Benar : " + jwbnBenar + "\nJawaban Salah : " + jwbSalah + "\nNilai : " + HitungNilai();
 
                     ImagePenilaian.SetActive(false);
                     ImageHasil.SetActive(true);
@@ -173,25 +171,6 @@ public class OlahSoal : MonoBehaviour
         }
         
         tampilkanNilai();       
-        }
-         
-        if (heartCount == 0) {
-            durasiPenilaian =  0;
-            Text.SetActive(false);
-            txtHasil.text = "Game Over \n Nilai Akhir Kamu: " + HitungNilai();
-            panel.SetActive(true);
-            ImagePenilaian.SetActive(false);
-            ImageHasil.SetActive(true);
-        }
-    }
-
-        public void decreaseHeart()
-    {
-        if (heartCount > 0)
-        {
-            heartCount--;
-            heartColors[heartCount].GetComponent<Image>().sprite = spriteHeartLoss;
-            
         }
     }
 }
